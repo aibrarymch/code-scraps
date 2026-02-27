@@ -23,7 +23,7 @@
     font-family: 'Cinzel', serif;
   }
 
-  /* Animated dark water background */
+  /* 暗い水面の背景アニメーション */
   .water-bg {
     position: fixed;
     inset: 0;
@@ -35,7 +35,7 @@
     z-index: 0;
   }
 
-  /* Caustic light ripple overlay */
+  /* コースティクス（水面の光の揺らぎ）オーバーレイ */
   .caustics {
     position: fixed;
     inset: -50%;
@@ -54,7 +54,7 @@
     100% { transform: translate(-3%, 2%) scale(1.05); }
   }
 
-  /* Central scene wrapper with parallax */
+  /* パララックス対応の中央シーンラッパー */
   .scene {
     position: relative;
     z-index: 10;
@@ -69,7 +69,7 @@
     align-items: center;
   }
 
-  /* Main SVG */
+  /* メインSVG */
   .tattoo-svg {
     width: 320px;
     height: 320px;
@@ -103,7 +103,7 @@
     stroke-width: 0.2;
   }
 
-  /* Heart stays hollow - opaque dark interior blocks glow bleed completely */
+  /* ハートは中空のまま - 暗い塗りでグロウの漏れを完全に遮断 */
   .tattoo-svg path.heart-path.materialized {
     fill: #05030a;
     stroke: rgba(225, 210, 248, 0.95);
@@ -119,7 +119,7 @@
   .glow-layer path.heart-path { fill: none !important; }
   .reflection-svg path.heart-path { fill: rgba(5, 3, 10, 0.5) !important; stroke: rgba(180, 150, 220, 0.3) !important; stroke-width: 1 !important; }
 
-  /* Glow layer - a duplicate SVG rendered behind with heavy blur */
+  /* グロウレイヤー - 同じSVGを背面に複製し強いぼかしをかけて発光表現 */
   .glow-layer {
     position: absolute;
     top: 0;
@@ -151,7 +151,7 @@
     50%      { opacity: 1; filter: blur(28px); }
   }
 
-  /* Water surface reflection */
+  /* 水面の反射 */
   .reflection {
     width: 320px;
     height: 160px;
@@ -187,7 +187,7 @@
     75%      { filter: blur(4.5px); transform: scaleY(-1) translateY(55.2%) scaleX(0.998); }
   }
 
-  /* Divider line between tattoo and reflection */
+  /* タトゥーと反射の間の水面ライン */
   .surface-line {
     width: 0;
     height: 1px;
@@ -209,7 +209,7 @@
     width: 280px;
   }
 
-  /* Floating motes of light */
+  /* 浮遊する光の粒子 */
   .motes {
     position: fixed;
     inset: 0;
@@ -227,7 +227,7 @@
     opacity: 0;
   }
 
-  /* Title text */
+  /* タイトルテキスト */
   .title {
     position: fixed;
     top: 36px;
@@ -248,7 +248,7 @@
     color: rgba(180, 160, 220, 0.3);
   }
 
-  /* Corner flourishes */
+  /* 四隅のコーナー装飾 */
   .corner {
     position: fixed;
     width: 60px;
@@ -270,7 +270,7 @@
   .corner.bl { bottom: 30px; left: 30px; border-bottom-width: 1px; border-left-width: 1px; }
   .corner.br { bottom: 30px; right: 30px; border-bottom-width: 1px; border-right-width: 1px; }
 
-  /* Vignette */
+  /* ビネット（周辺減光） */
   .vignette {
     position: fixed;
     inset: 0;
@@ -279,7 +279,7 @@
     z-index: 50;
   }
 
-  /* Very subtle noise */
+  /* 微細なノイズ */
   .noise {
     position: fixed;
     inset: 0;
@@ -297,7 +297,7 @@
 
 <div class="scene" id="scene">
   <div class="tattoo-wrapper">
-    <!-- Glow layer (behind) -->
+    <!-- グロウレイヤー（背面） -->
     <svg class="glow-layer" id="glowLayer" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
       <path d="M176,26c2.3,3.9,6.9,2.1,6.5-1-.3-2.7-3.5-6-9.3-8.6-7-3.1-13.2-2.3-19.9-.9,11.8-.4,18.4,3.5,22.6,10.5Z"/>
       <path class="heart-path" d="M144.3,102.1c-6.3-.7-15.2,7.1-16.8,13.8-.9-6.2-10.1-13.6-17.2-12.3s-8.5,6.6-8.5,11.2c0,5.8,4.8,10.9,10.3,19.7s8.3,10.1,13.7,18.3c5.5-8.3,9.9-13.4,14-17,2.8-2.3,8.9-6.5,12-12,2.3-4.2,2.9-9.7,2.7-13.1-.5-5.6-6-8.1-10.2-8.6Z"/>
@@ -308,7 +308,7 @@
       <path d="M71.9,21.1c-3.9,2.4-11.8,5.2-16.8,7.9-14.5,7.5-32,22-41.7,38.6,11.8-14.8,21.9-24.4,36.6-29.9-13.5,9.3-27.9,22.5-36.7,44.2,9.9-18.9,22.8-34.3,40.7-45.9,3.9-2.6,7.6-5.1,11.1-6.8,3.9-1.9,6.7-2.9,7.7-4.2-1.8,3.8.9,5.7,3.3,5.6,2.6,0,3.9-1.8,5-3.4-2.5,3.6-5.7,6.3-7.8,11.8-5.6,16.1-5.4,33.7,6.8,46,5.8,4.3,9.1,6.8,11.1,12.8-.5-7.8-6.6-10.9-10.6-15.7-9.8-13.4-10.3-24.9-4.7-43.1,1.5-4.5,5-7.8,5.9-11.4-2,2.1-4.3,2.8-6.3,2-3.6-1.4-3.5-5.6,0-9.6,2.5-2.9,7-5.4,11.2-5.8,5.1-.6,9-.5,14.7,1.1-9.7-.8-16.6,3-21.8,9.7-2.9,3.6-7.2,2.2-7.4-1.1,0-1.8.8-2.9-.7-2.8Z"/>
     </svg>
 
-    <!-- Main visible SVG -->
+    <!-- メインの表示用SVG -->
     <svg class="tattoo-svg" id="mainSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
       <path d="M176,26c2.3,3.9,6.9,2.1,6.5-1-.3-2.7-3.5-6-9.3-8.6-7-3.1-13.2-2.3-19.9-.9,11.8-.4,18.4,3.5,22.6,10.5Z"/>
       <path class="heart-path" d="M144.3,102.1c-6.3-.7-15.2,7.1-16.8,13.8-.9-6.2-10.1-13.6-17.2-12.3s-8.5,6.6-8.5,11.2c0,5.8,4.8,10.9,10.3,19.7s8.3,10.1,13.7,18.3c5.5-8.3,9.9-13.4,14-17,2.8-2.3,8.9-6.5,12-12,2.3-4.2,2.9-9.7,2.7-13.1-.5-5.6-6-8.1-10.2-8.6Z"/>
@@ -319,10 +319,10 @@
       <path d="M71.9,21.1c-3.9,2.4-11.8,5.2-16.8,7.9-14.5,7.5-32,22-41.7,38.6,11.8-14.8,21.9-24.4,36.6-29.9-13.5,9.3-27.9,22.5-36.7,44.2,9.9-18.9,22.8-34.3,40.7-45.9,3.9-2.6,7.6-5.1,11.1-6.8,3.9-1.9,6.7-2.9,7.7-4.2-1.8,3.8.9,5.7,3.3,5.6,2.6,0,3.9-1.8,5-3.4-2.5,3.6-5.7,6.3-7.8,11.8-5.6,16.1-5.4,33.7,6.8,46,5.8,4.3,9.1,6.8,11.1,12.8-.5-7.8-6.6-10.9-10.6-15.7-9.8-13.4-10.3-24.9-4.7-43.1,1.5-4.5,5-7.8,5.9-11.4-2,2.1-4.3,2.8-6.3,2-3.6-1.4-3.5-5.6,0-9.6,2.5-2.9,7-5.4,11.2-5.8,5.1-.6,9-.5,14.7,1.1-9.7-.8-16.6,3-21.8,9.7-2.9,3.6-7.2,2.2-7.4-1.1,0-1.8.8-2.9-.7-2.8Z"/>
     </svg>
 
-    <!-- Water surface line -->
+    <!-- 水面ライン -->
     <div class="surface-line" id="surfaceLine"></div>
 
-    <!-- Reflection -->
+    <!-- 水面の反射 -->
     <div class="reflection" id="reflection">
       <svg class="reflection-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
         <path d="M176,26c2.3,3.9,6.9,2.1,6.5-1-.3-2.7-3.5-6-9.3-8.6-7-3.1-13.2-2.3-19.9-.9,11.8-.4,18.4,3.5,22.6,10.5Z"/>
@@ -350,21 +350,31 @@
 
 <script>
 (function() {
+  // ================================================================
+  // SVGパスの描画 + マテリアライゼーション（実体化）アニメーション
+  //
+  // index.html と同じ stroke-dashoffset テクニックに加え、
+  // CSSの blur → sharp のトランジションを同時に行うことで
+  // 「ぼんやりした状態から実体化する」表現を実現している。
+  //
+  // パスの構成:
+  //   0: 小さな装飾  1: ハート  2: 中央本体  3: 下部
+  //   4: 右の翼  5: 左の翼  6: 左の装飾
+  // ================================================================
   const paths = document.querySelectorAll('#mainSvg path');
-  // 7 paths: [small-deco, heart, central-body, lower-body, right-wing, left-wing, left-deco]
-  const delays =        [0.6, 1.0, 1.6, 2.8, 1.2, 2.0, 2.4];
-  const drawDurations = [2.0, 2.5, 4.0, 3.5, 3.8, 3.5, 3.2];
+  const delays =        [0.6, 1.0, 1.6, 2.8, 1.2, 2.0, 2.4]; // 各パスの開始遅延（秒）
+  const drawDurations = [2.0, 2.5, 4.0, 3.5, 3.8, 3.5, 3.2]; // 各パスの描画時間（秒）
 
   paths.forEach((path, i) => {
     const d = delays[i] || i * 0.6;
     const dur = drawDurations[i] || 3;
     const len = path.getTotalLength();
 
-    // Set up stroke-dasharray for path drawing
+    // stroke-dasharray/dashoffset でパスを非表示にする（index.htmlと同じ原理）
     path.style.strokeDasharray = len;
     path.style.strokeDashoffset = len;
 
-    // Create draw keyframes
+    // パスごとに固有の描画キーフレームを動的生成
     const animName = `draw2_${i}`;
     const sheet = document.createElement('style');
     sheet.textContent = `
@@ -375,26 +385,38 @@
     `;
     document.head.appendChild(sheet);
 
-    // At trigger time: start stroke draw + blur materialization simultaneously
+    // 指定遅延後に2つの処理を同時実行:
+    //   1. ストローク描画アニメーションを開始
+    //   2. .materialized クラスを付与 → CSSトランジションで blur(12px) → blur(0px) に変化
+    //      これにより「ぼやけた状態から鮮明になる」マテリアライゼーション効果が生まれる
     setTimeout(() => {
       path.style.animation = `${animName} ${dur}s cubic-bezier(0.4, 0, 0.2, 1) forwards`;
       path.classList.add('materialized');
     }, d * 1000);
   });
 
-  // Activate glow layer after materialization
+  // ================================================================
+  // アニメーションのタイムライン制御
+  //
+  // 全パスの描画完了を基準に、後続エフェクトを段階的に表示する。
+  // maxDelay（最も遅いパスの開始時刻）を基準にオフセットを加えて
+  // 自然な流れで各要素が現れるようにしている。
+  // ================================================================
   const maxDelay = Math.max(...delays);
-  setTimeout(() => {
-    document.getElementById('glowLayer').classList.add('active');
-  }, (maxDelay + 2) * 1000);
 
-  // Show reflection and surface line
+  // 描画完了 +1秒後: 水面の反射と区切り線を表示
   setTimeout(() => {
     document.getElementById('reflection').classList.add('visible');
     document.getElementById('surfaceLine').classList.add('visible');
   }, (maxDelay + 1) * 1000);
 
-  // Show title and corners
+  // 描画完了 +2秒後: 背面のグロウレイヤーを起動
+  // （メインSVGと同じ形状をぼかして重ねることで、後光のような輝きを表現）
+  setTimeout(() => {
+    document.getElementById('glowLayer').classList.add('active');
+  }, (maxDelay + 2) * 1000);
+
+  // 描画完了 +2.5秒後: タイトルと四隅のコーナー装飾をフェードイン
   setTimeout(() => {
     document.getElementById('title').classList.add('visible');
     document.getElementById('cTL').classList.add('visible');
@@ -403,18 +425,28 @@
     document.getElementById('cBR').classList.add('visible');
   }, (maxDelay + 2.5) * 1000);
 
-  // ── Mouse parallax ──
+  // ================================================================
+  // マウス追従パララックス
+  //
+  // マウス位置に応じてシーン全体を微妙に回転させ、奥行き感を演出する。
+  // perspective(800px) で3D空間を定義し、rotateX/Y で傾ける。
+  //
+  // 線形補間（lerp）で現在値を目標値に徐々に近づけることで、
+  // マウスの動きに対して滑らかに追従する。係数 0.06 が追従の遅さを決める。
+  // ================================================================
   const scene = document.getElementById('scene');
   let targetX = 0, targetY = 0, currentX = 0, currentY = 0;
 
   document.addEventListener('mousemove', (e) => {
+    // マウス位置を画面中央からの相対値（-1〜1）に正規化し、最大回転角度を掛ける
     const cx = window.innerWidth / 2;
     const cy = window.innerHeight / 2;
-    targetX = (e.clientX - cx) / cx * 8;
-    targetY = (e.clientY - cy) / cy * 6;
+    targetX = (e.clientX - cx) / cx * 8;  // 左右最大 ±8度
+    targetY = (e.clientY - cy) / cy * 6;  // 上下最大 ±6度
   });
 
   function animateParallax() {
+    // 線形補間: current += (target - current) * 係数
     currentX += (targetX - currentX) * 0.06;
     currentY += (targetY - currentY) * 0.06;
     scene.style.transform =
@@ -423,24 +455,34 @@
   }
   animateParallax();
 
-  // ── Floating light motes ──
+  // ================================================================
+  // 浮遊する光の粒子（モート）
+  //
+  // 画面全体にランダム配置した小さな光の粒が、
+  // ゆっくりと上方に漂いながら明滅する。
+  // 水中に浮かぶ微小な光のパーティクルを表現している。
+  // ================================================================
   const motesContainer = document.getElementById('motes');
   const MOTE_COUNT = 20;
 
   for (let i = 0; i < MOTE_COUNT; i++) {
     const m = document.createElement('div');
     m.className = 'mote';
+
+    // ビューポート内にランダム配置（端から10%マージンを確保）
     m.style.left = (10 + Math.random() * 80) + 'vw';
     m.style.top = (10 + Math.random() * 80) + 'vh';
-    const size = 1 + Math.random() * 2.5;
+    const size = 1 + Math.random() * 2.5; // 粒サイズ: 1〜3.5px
     m.style.width = size + 'px';
     m.style.height = size + 'px';
 
-    const dur = 5 + Math.random() * 8;
-    const delay = 3 + Math.random() * 6;
-    const dX = (Math.random() - 0.5) * 60;
-    const dY = -20 - Math.random() * 40;
+    const dur = 5 + Math.random() * 8;       // 周期: 5〜13秒
+    const delay = 3 + Math.random() * 6;      // 開始遅延: 3〜9秒
+    const dX = (Math.random() - 0.5) * 60;    // 水平漂流: -30〜30px
+    const dY = -20 - Math.random() * 40;       // 垂直漂流: -20〜-60px（上方向）
 
+    // 各粒子に固有のキーフレームを生成
+    // scale変化を加えることで、遠近感のある明滅を表現
     const name = `mote${i}`;
     const sheet = document.createElement('style');
     sheet.textContent = `

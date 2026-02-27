@@ -19,7 +19,7 @@
     font-family: 'Cormorant Garamond', serif;
   }
 
-  /* Grain overlay */
+  /* ノイズ（グレイン）オーバーレイ */
   body::before {
     content: '';
     position: fixed;
@@ -29,7 +29,7 @@
     z-index: 100;
   }
 
-  /* Radial ambient light behind the tattoo */
+  /* タトゥー背面の放射状アンビエントライト */
   .ambient {
     position: fixed;
     inset: 0;
@@ -73,7 +73,7 @@
     }
   }
 
-  /* Main container */
+  /* メインコンテナ */
   .tattoo-container {
     position: relative;
     width: 340px;
@@ -83,7 +83,7 @@
     justify-content: center;
   }
 
-  /* The SVG itself */
+  /* SVG本体 */
   .tattoo-svg {
     width: 280px;
     height: 280px;
@@ -106,7 +106,7 @@
     stroke-width: 0.3;
   }
 
-  /* Glow pulsation applied after reveal */
+  /* 描画完了後のグロウ脈動エフェクト */
   .glow-active .tattoo-svg {
     animation: glowPulse 4s ease-in-out infinite;
   }
@@ -120,7 +120,7 @@
     }
   }
 
-  /* Floating particles */
+  /* 浮遊パーティクル */
   .particles {
     position: absolute;
     inset: -80px;
@@ -138,7 +138,7 @@
     box-shadow: 0 0 4px rgba(200, 170, 240, 0.4);
   }
 
-  /* Outer ring */
+  /* 外周リング */
   .ritual-ring {
     position: absolute;
     width: 320px;
@@ -170,7 +170,7 @@
     animation: ringReveal 3s ease-out 5.3s forwards, ringPulse 5s ease-in-out 8.3s infinite;
   }
 
-  /* Bottom text */
+  /* 下部テキスト */
   .inscription {
     position: fixed;
     bottom: 40px;
@@ -191,7 +191,7 @@
     to { color: rgba(180, 160, 210, 0.35); }
   }
 
-  /* Vertical decorative lines */
+  /* 縦の装飾ライン */
   .vert-line {
     position: fixed;
     width: 1px;
@@ -212,7 +212,7 @@
     to { height: 70vh; }
   }
 
-  /* Subtle scanline effect */
+  /* スキャンラインエフェクト */
   .scanline {
     position: fixed;
     inset: 0;
@@ -230,7 +230,7 @@
 </head>
 <body>
 
-<!-- SVG Filters -->
+<!-- SVGフィルター定義 -->
 <svg width="0" height="0" style="position:absolute">
   <defs>
     <filter id="glow-filter" x="-50%" y="-50%" width="200%" height="200%">
@@ -309,11 +309,23 @@
 
 <script>
 (function() {
-  // ── Path drawing animation ──
+  // ================================================================
+  // SVGパスのストローク描画アニメーション
+  //
+  // 仕組み:
+  //   1. getTotalLength() でパスの全長を取得
+  //   2. stroke-dasharray にその長さを設定（破線パターン = パス全長）
+  //   3. stroke-dashoffset を全長にすると線が完全に隠れる
+  //   4. offset を 0 にアニメーションすると「描かれていく」表現になる
+  // ================================================================
   const paths = document.querySelectorAll('.tattoo-svg path');
+
+  // 各パスの開始遅延（秒）- パーツごとに時間差をつけて順番に描かれるようにする
   const staggerDelays = [0.3, 0.8, 1.3, 1.8, 2.6, 3.0, 3.3, 3.1, 2.4];
+  // 各パスの描画にかける時間（秒）- 複雑なパスほど長く設定
   const drawDurations = [2.5, 3.5, 4.0, 3.0, 2.0, 3.2, 1.5, 1.8, 3.8];
 
+  // 全パスの描画完了時刻を追跡（後続エフェクトのトリガーに使う）
   let maxEndTime = 0;
 
   paths.forEach((path, i) => {
@@ -321,11 +333,12 @@
     const delay = staggerDelays[i] || i * 0.5;
     const dur = drawDurations[i] || 3;
 
-    // Initial state: stroke fully hidden via dash offset
+    // パスを非表示にする: dasharray = 全長、dashoffset = 全長で線が見えない状態
     path.style.strokeDasharray = len;
     path.style.strokeDashoffset = len;
 
-    // Create unique draw keyframes for each path
+    // パスごとに固有の @keyframes を動的生成
+    // （各パスの長さが異なるため、それぞれ個別のキーフレームが必要）
     const animName = `drawPath${i}`;
     const sheet = document.createElement('style');
     sheet.textContent = `
@@ -336,41 +349,55 @@
     `;
     document.head.appendChild(sheet);
 
-    // Apply the draw animation
+    // cubic-bezier(0.4, 0, 0.2, 1) = Material Designの標準イージング
+    // forwards = アニメーション終了後、最終状態を維持
     path.style.animation = `${animName} ${dur}s cubic-bezier(0.4, 0, 0.2, 1) ${delay}s forwards`;
 
     const endTime = delay + dur;
     if (endTime > maxEndTime) maxEndTime = endTime;
 
-    // After stroke is drawn, fade in the fill
+    // ストロークが70%描かれた時点でフィル（塗り）をフェードイン
+    // → 線が描き終わる少し前から色が染み出すような表現
     setTimeout(() => {
       path.classList.add('fill-in');
     }, (delay + dur * 0.7) * 1000);
   });
 
-  // ── Floating particles ──
+  // ================================================================
+  // フローティングパーティクル
+  //
+  // SVGの周囲に小さな光の粒を浮遊させて幻想的な雰囲気を演出する。
+  // 各パーティクルは極座標でランダム配置し、個別のアニメーションで
+  // ふわふわと漂う動きを表現する。
+  // ================================================================
   const particlesContainer = document.getElementById('particles');
   const PARTICLE_COUNT = 30;
 
   for (let i = 0; i < PARTICLE_COUNT; i++) {
     const p = document.createElement('div');
     p.className = 'particle';
+
+    // 極座標（角度 + 半径）でSVGの周囲にランダム配置
     const angle = Math.random() * Math.PI * 2;
     const radius = 100 + Math.random() * 120;
     const x = Math.cos(angle) * radius + 200;
     const y = Math.sin(angle) * radius + 200;
     p.style.left = x + 'px';
     p.style.top = y + 'px';
+
+    // パーティクルのサイズ: 1〜3px のランダム
     p.style.width = (1 + Math.random() * 2) + 'px';
     p.style.height = p.style.width;
 
-    const dur = 3 + Math.random() * 5;
-    const delay = Math.random() * 8 + 4;
-    const driftX = (Math.random() - 0.5) * 40;
-    const driftY = (Math.random() - 0.5) * 40;
+    const dur = 3 + Math.random() * 5;       // 周期: 3〜8秒
+    const delay = Math.random() * 8 + 4;      // 開始遅延: 4〜12秒（描画後に出現）
+    const driftX = (Math.random() - 0.5) * 40; // X方向の漂流量: -20〜20px
+    const driftY = (Math.random() - 0.5) * 40; // Y方向の漂流量: -20〜20px
 
     p.style.animation = `particleFloat${i} ${dur}s ease-in-out ${delay}s infinite`;
 
+    // 各パーティクルに固有のキーフレームを生成
+    // opacity をランダムにすることで、粒ごとに明滅のタイミングが異なり自然に見える
     const keyframes = `
       @keyframes particleFloat${i} {
         0%, 100% {
@@ -396,7 +423,13 @@
     particlesContainer.appendChild(p);
   }
 
-  // Activate glow pulse after drawing completes
+  // ================================================================
+  // グロウパルスの起動
+  //
+  // 全パスの描画が完了してから0.5秒後に、SVG全体に脈動するグロウ
+  // エフェクトを開始する。CSSの .glow-active クラスにより
+  // glow-filter と glow-filter-intense を交互に切り替えるアニメーション。
+  // ================================================================
   setTimeout(() => {
     document.querySelector('.tattoo-container').classList.add('glow-active');
   }, maxEndTime * 1000 + 500);
